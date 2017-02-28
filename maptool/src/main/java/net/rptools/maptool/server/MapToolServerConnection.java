@@ -83,7 +83,7 @@ public class MapToolServerConnection extends ServerConnection implements ServerO
 	 */
 	public void connectionAdded(net.rptools.clientserver.simple.client.ClientConnection conn) {
 		server.configureClientConnection(conn);
-
+		//TODO MV is called when client connects
 		Player player = playerMap.get(conn.getId().toUpperCase());
 		for (String id : playerMap.keySet()) {
 			server.getConnection().callMethod(conn.getId(), ClientCommand.COMMAND.playerConnected.name(), playerMap.get(id));
@@ -92,6 +92,9 @@ public class MapToolServerConnection extends ServerConnection implements ServerO
 		//     if (!server.isHostId(player.getName())) {
 		// Don't bother sending the campaign file if we're hosting it ourselves
 		server.getConnection().callMethod(conn.getId(), ClientCommand.COMMAND.setCampaign.name(), server.getCampaign());
+
+		//MV send out campaign infos for android phones
+		server.getConnection().callMethod(conn.getId(), ClientCommand.COMMAND.androidSetCampaign.name(), server.getCampaign().asAndroidCampaign());
 		//     }
 	}
 

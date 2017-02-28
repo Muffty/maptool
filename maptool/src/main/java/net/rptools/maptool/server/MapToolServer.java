@@ -34,211 +34,210 @@ import org.apache.log4j.Logger;
  * @author drice
  */
 public class MapToolServer {
-	private static final Logger log = Logger.getLogger(MapToolServer.class);
-	private static final int ASSET_CHUNK_SIZE = 5 * 1024;
+    private static final Logger log = Logger.getLogger(MapToolServer.class);
+    private static final int ASSET_CHUNK_SIZE = 5 * 1024;
 
-	private final MapToolServerConnection conn;
-	private final ServerMethodHandler handler;
-	private final ServerConfig config;
+    private final MapToolServerConnection conn;
+    private final ServerMethodHandler handler;
+    private final ServerConfig config;
 
-	private final Map<String, AssetTransferManager> assetManagerMap = Collections.synchronizedMap(new HashMap<String, AssetTransferManager>());
-	private final Map<String, ClientConnection> connectionMap = Collections.synchronizedMap(new HashMap<String, ClientConnection>());
-	private final AssetProducerThread assetProducerThread;
+    private final Map<String, AssetTransferManager> assetManagerMap = Collections.synchronizedMap(new HashMap<String, AssetTransferManager>());
+    private final Map<String, ClientConnection> connectionMap = Collections.synchronizedMap(new HashMap<String, ClientConnection>());
+    private final AssetProducerThread assetProducerThread;
 
-	private Campaign campaign;
-	private ServerPolicy policy;
-	private HeartbeatThread heartbeatThread;
+    private Campaign campaign;
+    private ServerPolicy policy;
+    private HeartbeatThread heartbeatThread;
 
-	public MapToolServer(ServerConfig config, ServerPolicy policy) throws IOException {
-		handler = new ServerMethodHandler(this);
-		conn = new MapToolServerConnection(this, config.getPort());
-		conn.addMessageHandler(handler);
+    public MapToolServer(ServerConfig config, ServerPolicy policy) throws IOException {
+        handler = new ServerMethodHandler(this);
+        conn = new MapToolServerConnection(this, config.getPort());
+        conn.addMessageHandler(handler);
 
-		campaign = new Campaign();
+        campaign = new Campaign();
 
-		assetProducerThread = new AssetProducerThread();
-		assetProducerThread.start();
+        assetProducerThread = new AssetProducerThread();
+        assetProducerThread.start();
 
-		this.config = config;
-		this.policy = policy;
+        this.config = config;
+        this.policy = policy;
 
-		// Start a heartbeat if requested
-		if (config.isServerRegistered()) {
-			heartbeatThread = new HeartbeatThread();
-			heartbeatThread.start();
-		}
-	}
+        // Start a heartbeat if requested
+        if (config.isServerRegistered()) {
+            heartbeatThread = new HeartbeatThread();
+            heartbeatThread.start();
+        }
+    }
 
-	public void configureClientConnection(ClientConnection connection) {
-		String id = connection.getId();
-		assetManagerMap.put(id, new AssetTransferManager());
-		connectionMap.put(id, connection);
-	}
+    public void configureClientConnection(ClientConnection connection) {
+        String id = connection.getId();
+        assetManagerMap.put(id, new AssetTransferManager());
+        connectionMap.put(id, connection);
+    }
 
-	public ClientConnection getClientConnection(String id) {
-		return connectionMap.get(id);
-	}
+    public ClientConnection getClientConnection(String id) {
+        return connectionMap.get(id);
+    }
 
-	public String getConnectionId(String playerId) {
-		return conn.getConnectionId(playerId);
-	}
+    public String getConnectionId(String playerId) {
+        return conn.getConnectionId(playerId);
+    }
 
-	/**
-	 * Forceably disconnects a client and cleans up references to it
-	 * 
-	 * @param id
-	 *            the connection ID
-	 */
-	public void releaseClientConnection(String id) {
-		ClientConnection connection = getClientConnection(id);
-		if (connection != null) {
-			try {
-				connection.close();
-			} catch (IOException e) {
-				log.error("Could not release connection: " + id, e);
-			}
-		}
-		assetManagerMap.remove(id);
-		connectionMap.remove(id);
-	}
+    /**
+     * Forceably disconnects a client and cleans up references to it
+     *
+     * @param id the connection ID
+     */
+    public void releaseClientConnection(String id) {
+        ClientConnection connection = getClientConnection(id);
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (IOException e) {
+                log.error("Could not release connection: " + id, e);
+            }
+        }
+        assetManagerMap.remove(id);
+        connectionMap.remove(id);
+    }
 
-	public void addAssetProducer(String connectionId, AssetProducer producer) {
-		AssetTransferManager manager = assetManagerMap.get(connectionId);
-		manager.addProducer(producer);
-	}
+    public void addAssetProducer(String connectionId, AssetProducer producer) {
+        AssetTransferManager manager = assetManagerMap.get(connectionId);
+        manager.addProducer(producer);
+    }
 
-	public void addObserver(ServerObserver observer) {
-		if (observer != null) {
-			conn.addObserver(observer);
-		}
-	}
+    public void addObserver(ServerObserver observer) {
+        if (observer != null) {
+            conn.addObserver(observer);
+        }
+    }
 
-	public void removeObserver(ServerObserver observer) {
-		conn.removeObserver(observer);
-	}
+    public void removeObserver(ServerObserver observer) {
+        conn.removeObserver(observer);
+    }
 
-	public boolean isHostId(String playerId) {
-		return config.getHostPlayerId() != null && config.getHostPlayerId().equals(playerId);
-	}
+    public boolean isHostId(String playerId) {
+        return config.getHostPlayerId() != null && config.getHostPlayerId().equals(playerId);
+    }
 
-	public MapToolServerConnection getConnection() {
-		return conn;
-	}
+    public MapToolServerConnection getConnection() {
+        return conn;
+    }
 
-	public boolean isPlayerConnected(String id) {
-		return conn.getPlayer(id) != null;
-	}
+    public boolean isPlayerConnected(String id) {
+        return conn.getPlayer(id) != null;
+    }
 
-	public void setCampaign(Campaign campaign) {
-		// Don't allow null campaigns, but allow the campaign to be cleared out
-		if (campaign == null) {
-			campaign = new Campaign();
-		}
-		this.campaign = campaign;
-	}
+    public void setCampaign(Campaign campaign) {
+        // Don't allow null campaigns, but allow the campaign to be cleared out
+        if (campaign == null) {
+            campaign = new Campaign();
+        }
+        this.campaign = campaign;
+    }
 
-	public Campaign getCampaign() {
-		return campaign;
-	}
+    public Campaign getCampaign() {
+        return campaign;
+    }
 
-	public ServerPolicy getPolicy() {
-		return policy;
-	}
+    public ServerPolicy getPolicy() {
+        return policy;
+    }
 
-	public void updateServerPolicy(ServerPolicy policy) {
-		this.policy = policy;
-	}
+    public void updateServerPolicy(ServerPolicy policy) {
+        this.policy = policy;
+    }
 
-	public ServerMethodHandler getMethodHandler() {
-		return handler;
-	}
+    public ServerMethodHandler getMethodHandler() {
+        return handler;
+    }
 
-	public ServerConfig getConfig() {
-		return config;
-	}
+    public ServerConfig getConfig() {
+        return config;
+    }
 
-	public void stop() {
-		try {
-			conn.close();
-			if (heartbeatThread != null) {
-				heartbeatThread.shutdown();
-			}
-			if (assetProducerThread != null) {
-				assetProducerThread.shutdown();
-			}
-		} catch (IOException e) {
-			// Not too concerned about this
-			e.printStackTrace();
-		}
-	}
+    public void stop() {
+        try {
+            conn.close();
+            if (heartbeatThread != null) {
+                heartbeatThread.shutdown();
+            }
+            if (assetProducerThread != null) {
+                assetProducerThread.shutdown();
+            }
+        } catch (IOException e) {
+            // Not too concerned about this
+            e.printStackTrace();
+        }
+    }
 
-	private static final Random random = new Random();
+    private static final Random random = new Random();
 
-	private class HeartbeatThread extends Thread {
-		private boolean stop = false;
-		private static final int HEARTBEAT_DELAY = 7 * 60 * 1000; // 7 minutes
-		private static final int HEARTBEAT_FLUX = 20 * 1000; // 20 seconds
+    private class HeartbeatThread extends Thread {
+        private boolean stop = false;
+        private static final int HEARTBEAT_DELAY = 7 * 60 * 1000; // 7 minutes
+        private static final int HEARTBEAT_FLUX = 20 * 1000; // 20 seconds
 
-		@Override
-		public void run() {
-			while (!stop) {
-				try {
-					Thread.sleep(HEARTBEAT_DELAY + (int) (HEARTBEAT_FLUX * random.nextFloat()));
-				} catch (InterruptedException ie) {
-					// This means stop
-					break;
-				}
-				// Pulse
-				MapToolRegistry.heartBeat(config.getPort());
-			}
-		}
+        @Override
+        public void run() {
+            while (!stop) {
+                try {
+                    Thread.sleep(HEARTBEAT_DELAY + (int) (HEARTBEAT_FLUX * random.nextFloat()));
+                } catch (InterruptedException ie) {
+                    // This means stop
+                    break;
+                }
+                // Pulse
+                MapToolRegistry.heartBeat(config.getPort());
+            }
+        }
 
-		public void shutdown() {
-			stop = true;
-			interrupt();
-		}
-	}
+        public void shutdown() {
+            stop = true;
+            interrupt();
+        }
+    }
 
-	////
-	// CLASSES
-	private class AssetProducerThread extends Thread {
-		private boolean stop = false;
+    ////
+    // CLASSES
+    private class AssetProducerThread extends Thread {
+        private boolean stop = false;
 
-		@Override
-		public void run() {
-			while (!stop) {
-				try {
-					boolean lookForMore = false;
-					for (Entry<String, AssetTransferManager> entry : assetManagerMap.entrySet()) {
-						AssetChunk chunk = entry.getValue().nextChunk(ASSET_CHUNK_SIZE);
-						if (chunk != null) {
-							lookForMore = true;
-							getConnection().callMethod(entry.getKey(), MapToolConstants.Channel.IMAGE, ClientCommand.COMMAND.updateAssetTransfer.name(), chunk);
-						}
-					}
-					if (lookForMore) {
-						continue;
-					}
-					// Sleep for a bit
-					synchronized (this) {
-						Thread.sleep(500);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					// keep on going
-				}
-			}
-		}
+        @Override
+        public void run() {
+            while (!stop) {
+                try {
+                    boolean lookForMore = false;
+                    for (Entry<String, AssetTransferManager> entry : assetManagerMap.entrySet()) {
+                        AssetChunk chunk = entry.getValue().nextChunk(ASSET_CHUNK_SIZE);
+                        if (chunk != null) {
+                            lookForMore = true;
+                            getConnection().callMethod(entry.getKey(), MapToolConstants.Channel.IMAGE, ClientCommand.COMMAND.updateAssetTransfer.name(), chunk);
+                        }
+                    }
+                    if (lookForMore) {
+                        continue;
+                    }
+                    // Sleep for a bit
+                    synchronized (this) {
+                        Thread.sleep(500);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // keep on going
+                }
+            }
+        }
 
-		public void shutdown() {
-			stop = true;
-		}
-	}
+        public void shutdown() {
+            stop = true;
+        }
+    }
 
-	////
-	// STANDALONE SERVER
-	public static void main(String[] args) throws IOException {
-		// This starts the server thread.
-		MapToolServer server = new MapToolServer(new ServerConfig(), new ServerPolicy());
-	}
+    ////
+    // STANDALONE SERVER
+    public static void main(String[] args) throws IOException {
+        // This starts the server thread.
+        MapToolServer server = new MapToolServer(new ServerConfig(), new ServerPolicy());
+    }
 }

@@ -526,4 +526,13 @@ public class Campaign {
 		exportSettings = d.getExportSettings();
 		exportLocation = d.getExportLocation();
 	}
+
+	public AndroidCampaign asAndroidCampaign() {
+		Map<GUID, AndroidZone> zones = new LinkedHashMap<>();
+		for(GUID k : this.zones.keySet()){
+			zones.put(k, this.zones.get(k).asAndroidZone());
+		}
+		return new AndroidCampaign(id,zones,campaignProperties.asAndroidCampaignProperties());
+	}
+
 }
