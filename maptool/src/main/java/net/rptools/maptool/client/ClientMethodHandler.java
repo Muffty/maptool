@@ -355,7 +355,13 @@ public class ClientMethodHandler extends AbstractMethodHandler {
 					renderer = MapTool.getFrame().getZoneRenderer(zoneGUID);
 					renderer.addMoveSelectionSet(playerId, keyToken, selectedSet, true);
 					return;
+				case commitMoveSelectionSet:
+					zoneGUID = (GUID) parameters[0];
+					keyToken = (GUID) parameters[1];
 
+					renderer = MapTool.getFrame().getZoneRenderer(zoneGUID);
+					renderer.commitMoveSelectionSet(keyToken);
+					return;
 				case stopTokenMove:
 					zoneGUID = (GUID) parameters[0];
 					keyToken = (GUID) parameters[1];

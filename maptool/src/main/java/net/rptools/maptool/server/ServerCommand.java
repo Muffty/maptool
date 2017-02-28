@@ -38,7 +38,7 @@ public interface ServerCommand {
 		bootPlayer, setCampaign, getZone, putZone, removeZone, putAsset, getAsset, removeAsset, putToken, removeToken, draw, clearAllDrawings, setZoneGridSize, message, undoDraw, showPointer, movePointer, hidePointer, startTokenMove, stopTokenMove, toggleTokenMoveWaypoint, updateTokenMove, setZoneVisibility, enforceZoneView, setZoneHasFoW, exposeFoW, hideFoW, setFoW, putLabel, removeLabel, sendTokensToBack, bringTokensToFront, enforceZone, setServerPolicy, addTopology, removeTopology, renameZone, heartbeat, updateCampaign, updateInitiative, updateTokenInitiative, setVisionType, updateCampaignMacros, setTokenLocation, // NOTE: This is to support third party token placement and shouldn't be depended on for general purpose token movement
 		setLiveTypingLabel, // Experimental
 		enforceNotification, // Override toggle button to show typing notifications
-		exposePCArea, setBoard, updateExposedAreaMeta
+		exposePCArea, setBoard, updateExposedAreaMeta, commitMoveSelectionSet
 	};
 
 	public void bootPlayer(String player);

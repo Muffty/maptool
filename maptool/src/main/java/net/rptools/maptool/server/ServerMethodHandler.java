@@ -150,6 +150,9 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
 			case startTokenMove:
 				startTokenMove(context.getString(0), context.getGUID(1), context.getGUID(2), (Set<GUID>) context.get(3));
 				break;
+			case commitMoveSelectionSet:
+				commitMoveSelectionSet(context.getGUID(0), context.getGUID(1));
+				break;
 			case stopTokenMove:
 				stopTokenMove(context.getGUID(0), context.getGUID(1));
 				break;
@@ -533,6 +536,10 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
 	}
 
 	public void startTokenMove(String playerId, GUID zoneGUID, GUID tokenGUID, Set<GUID> tokenList) {
+		forwardToClients();
+	}
+
+	public void commitMoveSelectionSet(GUID zoneGUID, GUID tokenGUID) {
 		forwardToClients();
 	}
 
