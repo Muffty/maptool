@@ -432,4 +432,8 @@ public class CampaignProperties {
 	public void setCharacterSheets(Map<String, String> characterSheets) {
 		this.characterSheets = characterSheets;
 	}
+
+	public AndroidCampaignProperties asAndroidCampaignProperties(){
+		return new AndroidCampaignProperties(tokenTypeMap);
+	}
 }

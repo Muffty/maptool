@@ -1603,5 +1603,10 @@ public class Zone extends BaseModel {
 		}
 		exposedAreaMeta.put(tokenExposedAreaGUID, meta);
 		fireModelChangeEvent(new ModelChangeEvent(this, Event.FOG_CHANGED));
+    }
+
+    public AndroidZone asAndroidZone() {
+        return new AndroidZone(id, grid.getOffsetX(), grid.getOffsetY(), grid.getSize(),
+                tokenMap, name, isVisible);
 	}
 }
