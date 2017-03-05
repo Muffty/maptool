@@ -8,7 +8,9 @@ import java.util.Map;
  */
 public class AndroidCampaignProperties {
 
-    private Map<String, List<TokenProperty>> tokenTypeMap;
+    public Map<String, List<TokenProperty>> tokenTypeMap;
+
+    public AndroidCampaignProperties(){}
 
     public AndroidCampaignProperties(Map<String, List<TokenProperty>> tokenTypeMap) {
         this.tokenTypeMap = tokenTypeMap;

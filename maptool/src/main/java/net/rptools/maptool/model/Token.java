@@ -1614,9 +1614,13 @@ public class Token extends BaseModel {
 		t1.anchorY = androidToken.anchorY;
 		t1.lastX = androidToken.lastX;
 		t1.lastY = androidToken.lastY;
-		t1.lastPath = androidToken.lastPath;
 		t1.name = androidToken.name;
 		t1.ownerList = androidToken.ownerList;
 		return t1;
 	}
+
+	public AndroidToken asAndroidToken() {
+		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList);
+	}
+	
 }

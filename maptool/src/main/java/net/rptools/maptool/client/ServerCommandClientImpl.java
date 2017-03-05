@@ -114,6 +114,7 @@ public class ServerCommandClientImpl implements ServerCommand {
 		// waiting for the zone change event don't get it.
 		MapTool.getCampaign().getZone(zoneGUID).putToken(token);
 		makeServerCall(COMMAND.putToken, zoneGUID, token);
+		makeServerCall(COMMAND.androidPutToken, zoneGUID, token.asAndroidToken());
 	}
 
 	public void removeToken(GUID zoneGUID, GUID tokenGUID) {

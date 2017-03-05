@@ -6,35 +6,35 @@ import java.util.Set;
  * Created by me on 01.03.2017.
  */
 public class AndroidToken {
-    public final GUID id;
-    public final boolean beingImpersonated ;
-    public final GUID exposedAreaGUID;
+    public GUID id;
+    public boolean beingImpersonated ;
+    public GUID exposedAreaGUID;
 
 
 
 
-    public final int x;
-    public final int y;
-    public final int z;
+    public int x;
+    public int y;
+    public int z;
 
-    public final int anchorX;
-    public final int anchorY;
+    public int anchorX;
+    public int anchorY;
 
-    public final double sizeScale = 1;
+    public double sizeScale = 1;
 
-    public final int lastX;
-    public final int lastY;
-    public final Path<? extends AbstractPoint> lastPath;
+    public int lastX;
+    public int lastY;
+    
 
+    public boolean isVisible = true;
+    public boolean visibleOnlyToOwner = false;
 
+    public String name;
+    public Set<String> ownerList;
 
-    public final boolean isVisible = true;
-    public final boolean visibleOnlyToOwner = false;
+    public AndroidToken(){}
 
-    public final String name;
-    public final Set<String> ownerList;
-
-    public AndroidToken(GUID id, boolean beingImpersonated, GUID exposedAreaGUID, int x, int y, int z, int anchorX, int anchorY, int lastX, int lastY, Path<? extends AbstractPoint> lastPath, String name, Set<String> ownerList) {
+    public AndroidToken(GUID id, boolean beingImpersonated, GUID exposedAreaGUID, int x, int y, int z, int anchorX, int anchorY, int lastX, int lastY, String name, Set<String> ownerList) {
         this.id = id;
         this.beingImpersonated = beingImpersonated;
         this.exposedAreaGUID = exposedAreaGUID;
@@ -45,7 +45,6 @@ public class AndroidToken {
         this.anchorY = anchorY;
         this.lastX = lastX;
         this.lastY = lastY;
-        this.lastPath = lastPath;
         this.name = name;
         this.ownerList = ownerList;
     }

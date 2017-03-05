@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.rptools.lib.MD5Key;
@@ -1624,7 +1625,14 @@ public class Zone extends BaseModel {
     }
 
     public AndroidZone asAndroidZone() {
+    	
+    	Map<GUID, AndroidToken> androidTokenMap = new HashMap<GUID, AndroidToken>();
+    	
+    	for(Entry<GUID, Token> tokenPair : tokenMap.entrySet()){
+    		androidTokenMap.put(tokenPair.getKey(), tokenPair.getValue().asAndroidToken());
+    	}
+    	
         return new AndroidZone(id, grid.getOffsetX(), grid.getOffsetY(), grid.getSize(),
-                tokenMap, name, isVisible);
+        		androidTokenMap, name, isVisible);
     }
 }

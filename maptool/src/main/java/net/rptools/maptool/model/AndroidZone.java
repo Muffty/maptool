@@ -1,28 +1,34 @@
 package net.rptools.maptool.model;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class AndroidZone {
-    private GUID id = new GUID();
-    private int gridOffsetX = 0;
-    private int gridoffsetY = 0;
-    private int gridSize;
+    public GUID id = new GUID();
+    public int gridOffsetX = 0;
+    public int gridOffsetY = 0;
+    public int gridSize;
 
-    private final Map<GUID, Token> tokenMap;
+    public Map<GUID, AndroidToken> tokenMap;
 
-    private String name;
-    private boolean isVisible;
+    public String name;
+    public boolean isVisible;
+
+    public AndroidZone(){  }
 
     public AndroidZone(GUID id, int gridOffsetX, int gridoffsetY, int gridSize,
-                       Map<GUID, Token> tokenMap, String name, boolean isVisible) {
+                       Map<GUID, AndroidToken> tokenMap, String name, boolean isVisible) {
         this.id = id;
         this.gridOffsetX = gridOffsetX;
-        this.gridoffsetY = gridoffsetY;
+        this.gridOffsetY = gridoffsetY;
         this.gridSize = gridSize;
         this.name = name;
         this.isVisible = isVisible;
         this.tokenMap = tokenMap;
+    }
+
+    @Override
+    public String toString() {
+        return name + "["+id+"]";
     }
 }
