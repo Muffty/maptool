@@ -1594,4 +1594,29 @@ public class Token extends BaseModel {
 	public GUID getExposedAreaGUID() {
 		return exposedAreaGUID;
 	}
+
+
+	/**
+	 * we create a new Token from this by using the values in androidToken
+	 * TODO think about it
+	 */
+	public Token newTokenFromThisAndAndroidToken(AndroidToken androidToken){
+		//necessary?
+		Token t1  = new Token(this);
+
+		t1.id = androidToken.id;
+		t1.beingImpersonated = androidToken.beingImpersonated;
+		t1.exposedAreaGUID = androidToken.exposedAreaGUID;
+		t1.x = androidToken.x;
+		t1.y = androidToken.y;
+		t1.z = androidToken.z;
+		t1.anchorX = androidToken.anchorX;
+		t1.anchorY = androidToken.anchorY;
+		t1.lastX = androidToken.lastX;
+		t1.lastY = androidToken.lastY;
+		t1.lastPath = androidToken.lastPath;
+		t1.name = androidToken.name;
+		t1.ownerList = androidToken.ownerList;
+		return t1;
+	}
 }
