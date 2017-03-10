@@ -5,7 +5,6 @@ import org.ajoberstar.grgit.*
 ext.repo = Grgit.open(project.file('.'))
 
 
-
 task wrapper(type: Wrapper) {
     gradleVersion='2.1'
 }
@@ -151,12 +150,10 @@ project(':launcher') {
     task release(dependsOn: assemble) << {
     }
 }
-
 project(':maptool') {
     apply plugin: 'de.gliderpilot.jnlp'
 
     mainClassName='net.rptools.maptool.client.LaunchInstructions'
-
 
     ext.distSource = projectDir.getPath() + '/src/dist/'
 
