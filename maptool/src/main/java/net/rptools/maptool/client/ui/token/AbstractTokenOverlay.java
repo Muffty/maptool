@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Comparator;
 
+import net.rptools.maptool.model.AndroidTokenState;
 import net.rptools.maptool.model.Player;
 import net.rptools.maptool.model.Token;
 
@@ -242,4 +243,8 @@ public abstract class AbstractTokenOverlay implements Cloneable {
 	 * @see java.lang.Object#clone()
 	 */
 	public abstract Object clone();
+	
+	public AndroidTokenState toAndroidTokenState(){
+		return new AndroidTokenState(name, order, group, mouseover, opacity, showGM, showOwner, showOthers);
+	}
 }

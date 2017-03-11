@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -1616,11 +1617,23 @@ public class Token extends BaseModel {
 		t1.lastY = androidToken.lastY;
 		t1.name = androidToken.name;
 		t1.ownerList = androidToken.ownerList;
+		
+		if(androidToken.state != null){
+    		if(t1.state == null)
+    			t1.state = new HashMap<>();
+        	t1.state.putAll(androidToken.state);
+		}
+        if(androidToken.properties != null){
+    		if(t1.propertyMapCI == null)
+    			t1.propertyMapCI = new CaseInsensitiveHashMap<>();
+        	t1.propertyMapCI.putAll(androidToken.properties);
+        }
+		
 		return t1;
 	}
 
 	public AndroidToken asAndroidToken() {
-		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList);
+		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList,charsheetImage, portraitImage, imageAssetMap, tokenType.equals(Type.PC.name()), state, propertyMapCI);
 	}
 	
 }

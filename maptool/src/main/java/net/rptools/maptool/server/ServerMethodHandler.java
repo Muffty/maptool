@@ -39,6 +39,8 @@ import net.rptools.maptool.transfer.AssetProducer;
 public class ServerMethodHandler extends AbstractMethodHandler implements ServerCommand {
     private final MapToolServer server;
     private final Object MUTEX = new Object();
+	
+	public static GUID lastEnforceZoneArguemnt;
 
     public ServerMethodHandler(MapToolServer server) {
         this.server = server;
@@ -158,6 +160,7 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
                     clearAllDrawings(context.getGUID(0), (Zone.Layer) context.get(1));
                     break;
                 case enforceZone:
+                	lastEnforceZoneArguemnt = context.getGUID(0);
                     enforceZone(context.getGUID(0));
                     break;
                 case setServerPolicy:

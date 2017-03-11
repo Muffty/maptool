@@ -434,6 +434,6 @@ public class CampaignProperties {
 	}
 
 	public AndroidCampaignProperties asAndroidCampaignProperties(){
-		return new AndroidCampaignProperties(tokenTypeMap);
+		return new AndroidCampaignProperties(tokenTypeMap, tokenStates);
 	}
 }

@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.rptools.clientserver.hessian.server.ServerConnection;
 import net.rptools.clientserver.simple.server.ServerObserver;
 import net.rptools.maptool.client.ClientCommand;
+import net.rptools.maptool.client.ClientMethodHandler;
 import net.rptools.maptool.model.Player;
 
 import org.apache.log4j.Logger;
@@ -95,6 +96,8 @@ public class MapToolServerConnection extends ServerConnection implements ServerO
 
 		//MV send out campaign infos for android phones
 		server.getConnection().callMethod(conn.getId(), ClientCommand.COMMAND.androidSetCampaign.name(), server.getCampaign().asAndroidCampaign());
+		if(ServerMethodHandler.lastEnforceZoneArguemnt != null)
+			server.getConnection().callMethod(conn.getId(), ClientCommand.COMMAND.enforceZone.name(), ServerMethodHandler.lastEnforceZoneArguemnt);
 		//     }
 	}
 
