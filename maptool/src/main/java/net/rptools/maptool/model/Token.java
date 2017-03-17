@@ -17,6 +17,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Transparency;
+import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
@@ -42,7 +44,10 @@ import net.rptools.lib.transferable.TokenTransferData;
 import net.rptools.maptool.client.AppUtil;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.functions.JSONMacroFunctions;
+import net.rptools.maptool.client.ui.zone.PlayerView;
+import net.rptools.maptool.client.ui.zone.ZoneView;
 import net.rptools.maptool.language.I18N;
+import net.rptools.maptool.model.Player.Role;
 import net.rptools.maptool.util.ImageManager;
 import net.rptools.maptool.util.StringUtil;
 import net.rptools.parser.ParserException;
@@ -1634,8 +1639,7 @@ public class Token extends BaseModel {
 	}
 
 	public AndroidToken asAndroidToken(GUID zoneGUID) {
-		boolean isVisibleForMobile = MapTool.getCampaign().getZone(zoneGUID).isTokenVisible(this);
-		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList,charsheetImage, portraitImage, imageAssetMap, tokenType.equals(Type.PC.name()), state, propertyMapCI, layer, isVisibleForMobile);
+		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList,charsheetImage, portraitImage, imageAssetMap, tokenType.equals(Type.PC.name()), state, propertyMapCI, layer, isVisible);
 	}
 	
 }

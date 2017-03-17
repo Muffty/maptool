@@ -15,6 +15,7 @@ import java.awt.geom.Area;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -208,13 +209,36 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
                 case updateExposedAreaMeta:
                     updateExposedAreaMeta(context.getGUID(0), context.getGUID(1), (ExposedAreaMetaData) context.get(2));
                     break;
+                case androidRequestVision:
+                	sendVisionList();
+                	break;
             }
         } finally {
             RPCContext.setCurrent(null);
         }
     }
 
-    /**
+    private void sendVisionList() {
+    	Zone zone = MapTool.getCampaign().getZone(lastEnforceZoneArguemnt);
+    	System.out.println("Update vision for " + zone.getName());
+    	LinkedList<GUID> visibleTokens = new LinkedList<>();
+		if(zone != null){
+			Area playerVision = new Area();
+			for (Token tok : zone.getPlayerTokens()) {
+				playerVision.add(MapTool.getFrame().getZoneRenderer(zone).getZoneView().getVisibleArea(tok));
+			}
+			//Vision was created
+			for (Token tok : zone.getAllTokens()) {
+				if(playerVision.contains(tok.getBounds(zone))){
+					System.out.println("Visible: " + tok.getName());
+					visibleTokens.add(tok.getId());
+				}
+			}
+		}
+		server.getConnection().broadcastCallMethod(ClientCommand.COMMAND.androidVision.name(), lastEnforceZoneArguemnt, visibleTokens);
+	}
+
+	/**
      * Send the current call to all other clients except for the sender
      */
     private void forwardToClients() {

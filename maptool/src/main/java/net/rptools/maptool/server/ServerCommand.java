@@ -39,7 +39,7 @@ public interface ServerCommand {
 		setLiveTypingLabel, // Experimental
 		enforceNotification, // Override toggle button to show typing notifications
 		exposePCArea, setBoard, updateExposedAreaMeta, commitMoveSelectionSet,
-		androidSetCampaign,		androidPutToken
+		androidSetCampaign,		androidPutToken, androidRequestVision
 	};
 
 	public void bootPlayer(String player);
