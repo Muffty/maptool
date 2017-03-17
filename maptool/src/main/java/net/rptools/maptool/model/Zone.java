@@ -1629,7 +1629,7 @@ public class Zone extends BaseModel {
     	Map<GUID, AndroidToken> androidTokenMap = new HashMap<GUID, AndroidToken>();
     	
     	for(Entry<GUID, Token> tokenPair : tokenMap.entrySet()){
-    		androidTokenMap.put(tokenPair.getKey(), tokenPair.getValue().asAndroidToken());
+    		androidTokenMap.put(tokenPair.getKey(), tokenPair.getValue().asAndroidToken(id));
     	}
     	
         return new AndroidZone(id, grid.getOffsetX(), grid.getOffsetY(), grid.getSize(),

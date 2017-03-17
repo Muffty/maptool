@@ -1633,8 +1633,9 @@ public class Token extends BaseModel {
 		return t1;
 	}
 
-	public AndroidToken asAndroidToken() {
-		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList,charsheetImage, portraitImage, imageAssetMap, tokenType.equals(Type.PC.name()), state, propertyMapCI, layer, isVisible);
+	public AndroidToken asAndroidToken(GUID zoneGUID) {
+		boolean isVisibleForMobile = MapTool.getCampaign().getZone(zoneGUID).isTokenVisible(this);
+		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList,charsheetImage, portraitImage, imageAssetMap, tokenType.equals(Type.PC.name()), state, propertyMapCI, layer, isVisibleForMobile);
 	}
 	
 }
