@@ -1617,6 +1617,7 @@ public class Token extends BaseModel {
 		t1.lastY = androidToken.lastY;
 		t1.name = androidToken.name;
 		t1.ownerList = androidToken.ownerList;
+		t1.layer = androidToken.layer;
 		
 		if(androidToken.state != null){
     		if(t1.state == null)
@@ -1633,7 +1634,7 @@ public class Token extends BaseModel {
 	}
 
 	public AndroidToken asAndroidToken() {
-		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList,charsheetImage, portraitImage, imageAssetMap, tokenType.equals(Type.PC.name()), state, propertyMapCI);
+		return new AndroidToken(id, beingImpersonated, exposedAreaGUID, x, y, z, anchorX, anchorY, lastX, lastY, name, ownerList,charsheetImage, portraitImage, imageAssetMap, tokenType.equals(Type.PC.name()), state, propertyMapCI, layer, isVisible);
 	}
 	
 }

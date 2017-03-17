@@ -43,10 +43,13 @@ public class AndroidToken {
     public Map<String, String> properties;
     
     public boolean pc;
+    
+    public String layer;
+    public TokenProperty tokenProperties;
 
     public AndroidToken(){}
 
-    public AndroidToken(GUID id, boolean beingImpersonated, GUID exposedAreaGUID, int x, int y, int z, int anchorX, int anchorY, int lastX, int lastY, String name, Set<String> ownerList, MD5Key charsheetImage, MD5Key portraitImage, Map<String, MD5Key> imageAssetMap, boolean pc, Map<String, Object> states, CaseInsensitiveHashMap<Object> propertyMapCI) {
+    public AndroidToken(GUID id, boolean beingImpersonated, GUID exposedAreaGUID, int x, int y, int z, int anchorX, int anchorY, int lastX, int lastY, String name, Set<String> ownerList, MD5Key charsheetImage, MD5Key portraitImage, Map<String, MD5Key> imageAssetMap, boolean pc, Map<String, Object> states, CaseInsensitiveHashMap<Object> propertyMapCI, String layer, boolean isVisible) {
         this.id = id;
         this.beingImpersonated = beingImpersonated;
         this.exposedAreaGUID = exposedAreaGUID;
@@ -63,9 +66,12 @@ public class AndroidToken {
         this.portraitImage = portraitImage;
         this.imageAssetMap = imageAssetMap;
         this.pc = pc;
+        this.isVisible = isVisible;
         
         this.state = new HashMap<>();
         this.properties = new HashMap<>();
+        
+        this.layer = layer;
 
         if(states != null)
 	        for (Entry<String, Object> entry : states.entrySet()) {
