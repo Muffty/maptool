@@ -594,6 +594,41 @@ public class Zone extends BaseModel {
         }
         return combined.intersects(tokenSize);
     }
+    public boolean isTokenVisibleToAndroid(Token token) {
+        if (token == null) {
+            return false;
+        }
+        // Base case, nothing is visible
+        if (!token.isVisible()) {
+            return false;
+        }
+        // Base case, everything is visible
+        if (!hasFog()) {
+            return true;
+        }
+        if (token.isVisibleOnlyToOwner() && !AppUtil.playerOwns(token)) {
+            return false;
+        }
+        // Token is visible, and there is fog
+        Rectangle tokenSize = token.getBounds(this);
+        Area combined = new Area();
+        PlayerView view = MapTool.getFrame().getZoneRenderer(this).getPlayerView();
+        if (MapTool.getServerPolicy().isUseIndividualFOW() && getVisionType() != VisionType.OFF) {
+            List<Token> toks = view.getTokens();
+            if (toks != null && !toks.isEmpty()) {
+                // Should this use FindTokenFunctions.OwnedFilter and zone.getTokenList()?
+                for (Token tok : toks) {
+                    if (tok.getType() != Token.Type.PC) {
+                        continue;
+                    }
+                    if (exposedAreaMeta.containsKey(tok.getExposedAreaGUID())) {
+                        combined.add(exposedAreaMeta.get(tok.getExposedAreaGUID()).getExposedAreaHistory());
+                    }
+                }
+            }
+        }
+        return combined.intersects(tokenSize);
+    }
 
     public boolean isTokenFootprintVisible(Token token) {
         if (token == null) {
