@@ -5,7 +5,7 @@ public class AndroidTokenState {
 	/**
 	 * The name of this overlay. Normally this is the name of a state.
 	 */
-	public String name;
+	public String name; 
 
 	/**
 	 * Order of the states as displayed on the states menu.
