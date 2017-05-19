@@ -220,9 +220,9 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
 
     private void sendVisionList() {
     	Zone zone = MapTool.getCampaign().getZone(lastEnforceZoneArguemnt);
-    	System.out.println("Update vision for " + zone.getName());
     	LinkedList<GUID> visibleTokens = new LinkedList<>();
 		if(zone != null){
+	    	System.out.println("Update vision for " + zone.getName());
 			Area playerVision = new Area();
 			for (Token tok : zone.getPlayerTokens()) {
 				playerVision.add(MapTool.getFrame().getZoneRenderer(zone).getZoneView().getVisibleArea(tok));
